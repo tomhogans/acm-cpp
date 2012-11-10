@@ -3,8 +3,10 @@ import collections
 
 class StandardDie:
     def __init__(self):
-        self.xaxis = collections.deque([6, 5, 1, 2]) # From face moving right
-        self.yaxis = collections.deque([6, 3, 1, 4]) # From face moving upward
+        # Reading from opposite face and moving right
+        self.xaxis = collections.deque([6, 5, 1, 2])
+        # Reading from opposite face and moving upward
+        self.yaxis = collections.deque([6, 3, 1, 4])
 
     def info(self):
         return {'x': list(self.xaxis), 'y': list(self.yaxis)}
@@ -66,11 +68,11 @@ class StandardDie:
 
     def face(self):
         """ Returns the value on the face of the die """
-        return self.xaxis[0]
+        return self.xaxis[2]
 
     def opposite(self):
         """ Returns the value opposite the face of the die """
-        return self.xaxis[2]
+        return self.xaxis[0]
 
 
 D1 = StandardDie()
