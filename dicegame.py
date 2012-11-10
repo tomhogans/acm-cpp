@@ -28,7 +28,7 @@ class StandardDie:
                 self.yaxis[3], self.yaxis[1])
 
     def tip(self, direction):
-        """Tip the die in the specified direction
+        """Tip (roll to adjacent edge) the die in the specified direction
 
         directions: forward, backward, left, right
 
