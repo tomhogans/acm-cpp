@@ -1,6 +1,9 @@
 class StandardDie:
-    def __init__(self):
-        self.values = [5, 1, 3] # (top, front, right)
+    """ Implementation of a standard die to be used in the ACM Maze Game """
+    def __init__(self, top=5, front=1, right=3):
+        """ By default, the values are initialized according to the 
+        ACM contest instructions describing the die. """
+        self.values = [top, front, right]
 
     def info(self):
         return dict(top=self.values[0], front=self.values[1], 
