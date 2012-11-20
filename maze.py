@@ -17,9 +17,8 @@ class Maze:
 
 def main():
     with open('./data/sample_maze.txt') as f:
-        name = f.readline() 
-        starting_params = map(int, f.readline().split())
-        M = Maze(name, *starting_params)
+        # Read first two lines into Maze constructor
+        M = Maze(f.readline(), *map(int, f.readline().split()))
         print(M)
 
 
