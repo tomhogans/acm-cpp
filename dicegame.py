@@ -1,15 +1,10 @@
-import collections
-
-
 class StandardDie:
     def __init__(self):
-        # Reading from opposite face and moving right
-        self.xaxis = collections.deque([6, 5, 1, 2])
-        # Reading from opposite face and moving upward
-        self.yaxis = collections.deque([6, 3, 1, 4])
+        self.values = [5, 1, 3] # (top, front, right)
 
     def info(self):
-        return {'x': list(self.xaxis), 'y': list(self.yaxis)}
+        return dict(top=self.values[0], front=self.values[1], 
+                right=self.values[2])
 
     def __repr__(self):
         return "<StandardDie ({})>".format(self.face())
@@ -18,61 +13,59 @@ class StandardDie:
         return """
             _____
             |   |
-            | {5} |
+            | {2} |
      _______|___|___
     |   |   |   |   |
-    | {2} | {3} | {0} | {1} |
+    | {1} | {3} | {4} | {0} |
     |___|___|___|___|
             |   |
-            | {4} |
+            | {5} |
             |___|
-        """.format(self.xaxis[0], self.xaxis[1], self.xaxis[2], self.xaxis[3],
-                self.yaxis[3], self.yaxis[1])
+        """.format(self.values[0], self.values[1], self.values[2], 
+                (7 - self.values[0]), (7 - self.values[1]), 
+                (7 - self.values[2]))
 
     def tip(self, direction):
         """Tip (roll to adjacent edge) the die in the specified direction
 
-        directions: forward, backward, left, right
+        directions: front, back, left, right
 
         >>> D2.tip('right')
         >>> D2.info()
-        {'y': [2, 3, 5, 4], 'x': [2, 6, 5, 1]}
-        >>> D2.tip('right')
+        {'front': 1, 'top': 4, 'right': 5}
         >>> D2.tip('right')
         >>> D2.tip('right')
         >>> D2.info()
-        {'y': [6, 3, 1, 4], 'x': [6, 5, 1, 2]}
-        >>> D2.tip('forward')
+        {'front': 1, 'top': 3, 'right': 2}
+        >>> D2.tip('front')
         >>> D2.info()
-        {'y': [4, 6, 3, 1], 'x': [4, 5, 3, 2]}
+        {'front': 3, 'top': 6, 'right': 2}
 
         """
-        if direction == 'forward':
-            self.yaxis.rotate(1)
-            self.xaxis[0] = self.yaxis[0]
-            self.xaxis[2] = self.yaxis[2]
-        elif direction == 'backward':
-            self.yaxis.rotate(-1)
-            self.xaxis[0] = self.yaxis[0]
-            self.xaxis[2] = self.yaxis[2]
+        # Unpack values to local variables
+        top, front, right = self.values
+
+        if direction == 'front':
+            top, front = (7 - front), top
+        elif direction == 'back':
+            top, front = front, (7 - top)
         elif direction == 'left':
-            self.xaxis.rotate(-1)
-            self.yaxis[0] = self.xaxis[0]
-            self.yaxis[2] = self.xaxis[2]
+            top, right = right, (7 - top)
         elif direction == 'right':
-            self.xaxis.rotate(1)
-            self.yaxis[0] = self.xaxis[0]
-            self.yaxis[2] = self.xaxis[2]
+            top, right = (7 - right), top
         else:
             raise Exception("Invalid direction parameter")
 
+        # Apply changed values
+        self.values = [top, front, right]
+
     def face(self):
         """ Returns the value on the face of the die """
-        return self.xaxis[2]
+        return self.values[1]
 
     def opposite(self):
         """ Returns the value opposite the face of the die """
-        return self.xaxis[0]
+        return 7 - self.face()
 
 
 D1 = StandardDie()
